@@ -1,17 +1,17 @@
 /**
  * Import Angular libraries.
  */
-import { Directive, Input, Output, EventEmitter, OnDestroy, AfterViewChecked, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, Input, Output, EventEmitter, OnDestroy, AfterViewChecked, OnChanges, SimpleChanges } from '@angular/core'
 
 /**
  * Import third-party libraries.
  */
-import { Text } from '@svgdotjs/svg.js';
+import { Text } from '@svgdotjs/svg.js'
 
 /**
  * Import custom components.
  */
-import { SvgContainerComponent } from '../components/svg-container/svg-container.component';
+import { SvgContainerComponent } from '../components/svg-container/svg-container.component'
 
 @Directive({
   selector: 'svg-text'
@@ -20,7 +20,7 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
   /**
    * Globally used variables within the directive.
    */
-  private _text: Text;
+  private _text: Text
 
   /**
    * Import variables for the text directive.
@@ -31,6 +31,7 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
   @Input() y = 0; // Starting point on y axis.
   @Input() size = 10; // Size of the text.
   @Input() classes: string[] = []; // List of CSS classes which needs to be added.
+  @Input() attrs: { [key: string]: any } = {} // List of attributes
 
   /**
    * Output variables for the text directive.
@@ -54,7 +55,7 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
   ngAfterViewChecked(): void {
     // Check if container is created and no text object is created
     if (this._svgContainer.getContainer() && !this._text) {
-      this.createText();
+      this.createText()
     }
   }
 
@@ -62,7 +63,7 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
    * Does all required pre-requisites before destroying the component.
    */
   ngOnDestroy(): void {
-    this._text.remove();
+    this._text.remove()
   }
 
   /**
@@ -72,22 +73,22 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
   ngOnChanges(changes: SimpleChanges): void {
     if (this._text) {
       // If we have already created the object, update it.
-      this.updateText();
+      this.updateText()
 
       // Check if classes were changed
       if (changes.classes && changes.classes.currentValue !== changes.classes.previousValue) {
         // Get classes that needs to be removed
         const classesToRemove = changes.classes.previousValue.filter((previousClass: string) =>
           !changes.classes.currentValue.some((currentClass: string) => currentClass === previousClass)
-        );
+        )
 
         // Get classes that needs to be added
         const classesToAdd = changes.classes.currentValue.filter((currentClass: string) =>
           !changes.classes.previousValue.some((previousClass: string) => currentClass === previousClass)
-        );
+        )
 
         // Add and remove classes
-        this.addRemoveClasses(classesToAdd, classesToRemove);
+        this.addRemoveClasses(classesToAdd, classesToRemove)
       }
     }
   }
@@ -102,7 +103,8 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
       .font({
         size: this.size // Update the size of the text
       })
-      .move(this.x, this.y); // Update the location of the text
+      .move(this.x, this.y) // Update the location of the text
+      .attr(this.attrs)
   }
 
   /**
@@ -115,14 +117,15 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
       .font({
         size: this.size // Set the size of the text
       })
+      .attr(this.attrs)
       .move(this.x, this.y) // Set the location of the text
       .on('click', (evt: MouseEvent) => this.clickEvent.emit(evt)) // Assign click event
       .on('dblclick', (evt: MouseEvent) => this.doubleClickEvent.emit(evt)) // Assign double click event
       .on('mouseover', (evt: MouseEvent) => this.mouseOverEvent.emit(evt)) // Assign mouse over event
-      .on('mouseout', (evt: MouseEvent) => this.mouseOutEvent.emit(evt)); // Assign mouse out event
+      .on('mouseout', (evt: MouseEvent) => this.mouseOutEvent.emit(evt)) // Assign mouse out event
 
     // Add classes to the text
-    this.addRemoveClasses(this.classes);
+    this.addRemoveClasses(this.classes)
   }
 
   /**
@@ -134,13 +137,13 @@ export class SvgTextDirective implements AfterViewChecked, OnChanges, OnDestroy 
     // First let's remove classes, that are not necessary anymore
     for (const classToRemove of classesToRemove) {
       this._text
-        .removeClass(classToRemove);
+        .removeClass(classToRemove)
     }
 
     // Now let's add new classes
     for (const classToAdd of classesToAdd) {
       this._text
-        .addClass(classToAdd);
+        .addClass(classToAdd)
     }
   }
 }
