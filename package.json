@@ -41,7 +41,7 @@
     "@svgdotjs/svg.js": "^3.0.16"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.901.0",
+    "@angular-devkit/build-angular": "^0.1000.2",
     "@angular/animations": "^9.1.0",
     "@angular/cli": "^9.1.0",
     "@angular/common": "^9.1.0",
@@ -61,7 +61,7 @@
     "codecov": "^3.6.5",
     "codelyzer": "^5.2.2",
     "core-js": "^3.6.4",
-    "karma": "^4.4.1",
+    "karma": "^5.1.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage-istanbul-reporter": "^2.1.1",
     "karma-jasmine": "^3.1.1",
